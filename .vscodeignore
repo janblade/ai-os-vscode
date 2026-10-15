@@ -1,0 +1,17 @@
+src/**
+webview/**
+tests/**
+scripts/**
+.vscode/**
+.vscode-test/**
+.test-build/**
+node_modules/**
+tsconfig*.json
+build.mjs
+dist/test-*
+package-lock.json
+
+framework/**
+runtime/**
+.github/**
+CONTRIBUTING.md

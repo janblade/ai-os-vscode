@@ -1,0 +1,114 @@
+select { font: inherit; color: var(--vscode-input-foreground); background: var(--vscode-input-background); border: 1px solid var(--vscode-input-border, #3a4756); border-radius: 5px; padding: 8px; max-width: 100%; }
+select:focus-visible { outline: 2px solid var(--vscode-focusBorder); outline-offset: 2px; }
+.detail-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.dashboard-search { flex: 1; min-width: 180px; }
+.dashboard-grid { display: grid; grid-template-columns: minmax(240px, 2fr) minmax(0, 3fr); border: 1px solid var(--vscode-widget-border, #3a4756); border-radius: 8px; overflow: hidden; }
+.dashboard-list { padding: 16px; }
+.entry-card { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; padding: 16px; margin-bottom: 10px; text-align: left; border: 1px solid var(--vscode-widget-border, #3a4756); }
+.entry-card.selected { border-color: var(--vscode-focusBorder, #7bafff); }
+.entry-card strong { flex: 1; overflow-wrap: anywhere; }
+.entry-card small, .entry-problem { width: 100%; overflow-wrap: anywhere; line-height: 1.5; }
+.entry-problem { color: var(--vscode-errorForeground, #ff9999); }
+.source-root { overflow-wrap: anywhere; font-size: 12px; color: var(--vscode-descriptionForeground); }
+.source-preview { max-height: 65vh; overflow: auto; }
+.empty { padding: 24px 8px; }
+@media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } .source-preview { max-height: 50vh; } }
+
+.task-form { border-top: 1px solid var(--vscode-widget-border, #3a4756); margin-top: 20px; padding-top: 12px; }
+.task-form form { margin-bottom: 20px; }
+.task-form select { display: block; width: 100%; }
+.archive-filter { display: flex; align-items: center; gap: 6px; margin: 0; white-space: nowrap; }
+.archive-filter input { width: auto; }
+
+.task-subtitle { width:100%; line-height:1.5; color:var(--vscode-descriptionForeground); }
+.entry-card progress { display:block; width:100%; height:7px; border:0; accent-color:var(--vscode-progressBar-background, #4d92ff); }
+
+.task-form button[aria-pressed="true"] { background: var(--vscode-button-background, #2671d9); color: var(--vscode-button-foreground, #fff); border-color: var(--vscode-focusBorder, #7bafff); }
+
+.epic-story { border-top: 1px solid var(--vscode-widget-border); padding: 12px 0; }
+.epic-story pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.epic-stories > progress { display:block; width:100%; height:7px; accent-color:var(--vscode-progressBar-background, #4d92ff); }
+
+.execution pre, .task-form pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 45vh; overflow: auto; }
+.execution { border-top: 1px solid var(--vscode-widget-border); padding-top: 12px; }
+
+.task-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.task-heading h2 { font-size:20px; overflow-wrap:anywhere; }
+.task-states { display:flex; flex-wrap:wrap; gap:24px; margin:20px 0; }
+.task-states dt { font-size:11px; color:var(--vscode-descriptionForeground); }
+.task-states dd { margin:6px 0 0; font-weight:600; }
+.task-tabs { display:flex; gap:4px; border-bottom:1px solid var(--vscode-widget-border); margin-bottom:16px; flex-wrap:wrap; }
+.task-tabs button { background:transparent; color:var(--vscode-foreground); border-radius:0; padding:10px 12px; }
+.task-tabs button[aria-selected="true"] { border-bottom:2px solid var(--vscode-focusBorder); }
+.task-workspace [hidden] { display:none; }
+.task-workspace details { margin:16px 0; }
+.task-workspace summary { cursor:pointer; }
+.task-more .detail-actions { margin-top:16px; }
+.task-copy { white-space:pre-wrap; overflow-wrap:anywhere; }
+.draft-status { color:var(--vscode-inputValidation-warningForeground, #dbb85f); }
+.framework-location { margin-bottom:16px; }
+.discard-dialog { position:fixed; inset:25% auto auto 50%; transform:translateX(-50%); width:min(460px, 90vw); padding:24px; z-index:100; background:var(--vscode-editor-background); border:2px solid var(--vscode-focusBorder); border-radius:8px; box-shadow:0 0 0 100vmax #0009; }
+@media (min-width:801px) { .dashboard-list { max-height:calc(100vh - 240px); overflow:auto; position:sticky; top:0; } }
+
+.discard-backdrop { position:fixed; inset:0; z-index:1000; background:#0009; }
+.discard-dialog { box-shadow:none; }
+
+.live-status { border-left:3px solid var(--vscode-progressBar-background, #4d92ff); padding-left:12px; }
+.activity-trail { max-height:240px; overflow:auto; list-style:none; padding:0; }
+.activity-trail li { padding:6px 0; }
+.activity-trail time { color:var(--vscode-descriptionForeground); font-variant-numeric:tabular-nums; }
+
+.phase-current { padding:16px; border:1px solid var(--vscode-widget-border, #3a4756); border-radius:8px; }
+.phase-current h3 { margin:12px 0 6px; }
+.approval-card { border-left:3px solid var(--vscode-focusBorder, #7bafff); padding:12px; margin-top:12px; }
+.latest-update { margin:16px 0; }
+.latest-update h3 { display:inline; margin-right:12px; }
+.latest-update time { font-size:12px; color:var(--vscode-descriptionForeground); }
+.latest-update pre { max-height:150px; }
+.phase-timeline { list-style:none; padding:0; margin:16px 0; }
+.phase-timeline li { border-top:1px solid var(--vscode-widget-border, #3a4756); }
+.phase-row { margin:0 !important; padding:12px 0; }
+.phase-row summary { cursor:pointer; display:flex; gap:12px; align-items:center; justify-content:space-between; }
+.phase-row summary > span:first-child::before { content:'\25B8'; margin-right:8px; }
+.phase-row[open] summary > span:first-child::before { content:'\25BE'; }
+.phase-row .badge { flex-shrink:0; }
+.execution-details { margin-top:16px; }
+.execution-details > details { margin:12px 0; }
+.execution summary:focus-visible { outline:2px solid var(--vscode-focusBorder); outline-offset:3px; }
+
+.operation-controls { border: 0; padding: 0; margin: 0; min-width: 0; }
+.operation-status { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--vscode-editorInfo-background, #17324a); border-radius: 6px; }
+.operation-spinner { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: operation-spin 0.8s linear infinite; flex-shrink: 0; }
+@keyframes operation-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .operation-spinner { animation: none; } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+.execution [role=tablist] { display:flex;gap:8px;margin-bottom:16px; }
+.execution [role=tab][aria-selected=true] { outline:2px solid var(--vscode-focusBorder,#7bafff); }
+.run-flow-canvas { height:260px;min-width:0;border:1px solid var(--vscode-widget-border,#3a4756);border-radius:8px; }
+.run-flow .react-flow__node { width:190px;text-align:left;background:var(--vscode-editor-background,#20252d);color:var(--vscode-foreground,#eee);border:2px solid var(--vscode-widget-border,#728093); }
+.run-flow .react-flow__node strong,.run-flow .react-flow__node span,.run-flow .react-flow__node small { display:block;margin:4px 0;overflow-wrap:anywhere; }
+.run-flow .run-node-running { border-color:var(--vscode-progressBar-background,#4d92ff); }
+.run-flow .run-node-waitingApproval { border-color:var(--vscode-editorWarning-foreground,#e1b84a); }
+.run-flow .run-node-succeeded { border-color:var(--vscode-testing-iconPassed,#6cbe7b); }
+.run-flow .run-node-failed,.run-flow .run-node-interrupted,.run-flow .run-node-cancelled { border-style:dashed;border-color:var(--vscode-editorError-foreground,#e98a80); }
+.run-flow .react-flow__node.selected { outline:3px solid var(--vscode-focusBorder,#7bafff);outline-offset:3px; }
+.run-flow .react-flow__edge-path { stroke:var(--vscode-descriptionForeground,#abb6c4); }
+.run-flow .run-edge-pending path { stroke-dasharray:5 4; }
+.run-flow .run-edge-complete path { stroke:var(--vscode-testing-iconPassed,#6cbe7b); }
+.run-phase-picker { display:flex;flex-wrap:wrap;gap:6px;margin:12px 0; }
+.run-phase-picker button { max-width:100%;white-space:normal;overflow-wrap:anywhere; }
+.run-phase-picker button[aria-pressed=true] { outline:2px solid var(--vscode-focusBorder,#7bafff); }
+.run-node-inspector { padding:16px;border:1px solid var(--vscode-widget-border,#3a4756);border-radius:8px;min-width:0; }
+.run-facts { display:grid;grid-template-columns:minmax(90px,auto) minmax(0,1fr);gap:8px 16px; }
+.run-facts dt { color:var(--vscode-descriptionForeground); }
+.run-facts dd { margin:0;overflow-wrap:anywhere; }
+.run-context li { overflow-wrap:anywhere;margin:6px 0; }
+.run-flow pre { max-height:300px;overflow:auto; }
+@media(max-width:600px) { .run-flow-canvas{height:220px}.run-facts{grid-template-columns:1fr;gap:4px}.run-facts dd{margin-bottom:8px} }
+
+.run-flow .react-flow__controls-button { background:var(--vscode-button-secondaryBackground,#354252);fill:var(--vscode-foreground,#eee);border-color:var(--vscode-widget-border,#728093); }
+
+.inline-recovery { border:1px solid var(--vscode-focusBorder,#7bafff);border-radius:8px;padding:20px;margin:16px 0;background:var(--vscode-sideBar-background,#182430); }
+.inline-recovery pre { white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto; }
