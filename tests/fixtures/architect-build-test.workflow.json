@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "id": "e2ee7581-6730-4286-875a-515963623f92",
+  "name": "Architect, approve, build and test",
+  "nodes": [
+    {
+      "id": "architect-plan",
+      "kind": "agent",
+      "label": "ARCHITECT_PLAN - draft architecture",
+      "position": {
+        "x": 80,
+        "y": 100
+      },
+      "config": {
+        "provider": "codex",
+        "agentId": null,
+        "readOnly": true,
+        "prompt": "Invoke OS_COMMAND ARCHITECT_PLAN with --idea from the selected task. Ask the user if the idea is missing. Read core.architect.sk and run discovery/design/planning phases 1-3 only. This step is mechanically read-only: inspect context, interview, produce architecture, MVP stories, acceptance criteria, milestones, risks and verification strategy; stop before scaffolding or implementation. Return the full proposed plan for the following human approval step. The plan is working data until approved and persisted; do not claim it was saved."
+      }
+    },
+    {
+      "id": "approve-plan",
+      "kind": "approval",
+      "label": "Approve architecture and implementation plan",
+      "position": {
+        "x": 400,
+        "y": 100
+      },
+      "config": {}
+    },
+    {
+      "id": "build",
+      "kind": "agent",
+      "label": "Execute approved plan",
+      "position": {
+        "x": 720,
+        "y": 100
+      },
+      "config": {
+        "provider": "codex",
+        "agentId": null,
+        "requireVerification": true,
+        "prompt": "The preceding workflow gate approved the architect-plan output. Read that frozen plan and approval from previousSteps. Preserve AI-OS approval and memory gates. Persist the approved plan to its dated memory/plans file through a proposal and human-reviewed memory operation, including the task Active plan pointer; ask the user to apply the proposal and verify the saved plan before proceeding. If unavailable, return blocked. Invoke OS_COMMAND PLAN_EXECUTE --plan=<verified approved plan file>; for genuinely plan-less implementation use DEV_IMPLEMENT_REVIEWED, never claim PLAN_EXECUTE without a saved plan. Implement the approved scaffold/features in the bound repository, verify each step and perform the registered review pass. No deployment, kernel changes, task closure or semantic promotion. Surface required manifest/bootstrap changes as manual follow-ups. Return only JSON with status (passed, failed or blocked), summary, and verification (an array of actual command/results and limitations). Use passed only when the phase requirements were actually verified. A failed/blocked/malformed report stops this workflow. Do not claim success from intention alone."
+      }
+    },
+    {
+      "id": "test",
+      "kind": "agent",
+      "label": "TEST_RUN - independent delivery verification",
+      "position": {
+        "x": 1040,
+        "y": 100
+      },
+      "config": {
+        "provider": "codex",
+        "agentId": null,
+        "requireVerification": true,
+        "prompt": "Invoke OS_COMMAND TEST_RUN using the project detected test framework and the approved plan acceptance criteria. Run relevant build/type/unit/integration checks and disclose unavailable end-to-end/third-party setup rather than silently ticking it. Verify against actual code and command exit results, not the previous agent claims. Do not deploy, close tasks or promote memory. Return only JSON with status (passed, failed or blocked), summary, and verification (an array of actual command/results and limitations). Use passed only when the phase requirements were actually verified. A failed/blocked/malformed report stops this workflow. Do not claim success from intention alone."
+      }
+    },
+    {
+      "id": "review-delivery",
+      "kind": "approval",
+      "label": "Review changes, test evidence and remaining risks",
+      "position": {
+        "x": 1360,
+        "y": 100
+      },
+      "config": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "architect-plan-approve-plan",
+      "source": "architect-plan",
+      "target": "approve-plan",
+      "sourcePort": "success",
+      "targetPort": "in"
+    },
+    {
+      "id": "approve-plan-build",
+      "source": "approve-plan",
+      "target": "build",
+      "sourcePort": "success",
+      "targetPort": "in"
+    },
+    {
+      "id": "build-test",
+      "source": "build",
+      "target": "test",
+      "sourcePort": "success",
+      "targetPort": "in"
+    },
+    {
+      "id": "test-review-delivery",
+      "source": "test",
+      "target": "review-delivery",
+      "sourcePort": "success",
+      "targetPort": "in"
+    }
+  ]
+}

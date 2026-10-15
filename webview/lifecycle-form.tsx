@@ -1,0 +1,20 @@
+import { useEffect, useState } from 'react';
+import { DashboardMessage } from '../src/dashboard-contracts';
+export interface LifecycleDraft { kind: 'review' | 'epic' | 'handoff'; id: string; root: string; token: string; content?: string; status?: string; diff?: string; stagedDiff?: string; untracked?: string[]; branch?: string; head?: string; runId?: string }
+export function LifecycleForm({ draft, revision, enabled, post, close, onDirtyChange }: { draft: LifecycleDraft; revision: number; enabled: boolean; post: (message: DashboardMessage) => void; close: () => void; onDirtyChange?: (dirty: boolean) => void }) {
+  const [content, setContent] = useState(draft.content ?? ''); const [verification, setVerification] = useState(''); const [findings, setFindings] = useState(''); const [nextStep, setNextStep] = useState(''); const [unknowns, setUnknowns] = useState('');
+  const dirty = content !== (draft.content ?? '') || Boolean(verification || findings || nextStep || unknowns);
+  useEffect(() => { onDirtyChange?.(dirty); }, [dirty, onDirtyChange]);
+  const reference = { id: draft.id, revision, token: draft.token };
+  return <section className="task-form" aria-label="Lifecycle form"><h2>{draft.kind === 'review' ? 'Review work' : draft.kind === 'epic' ? 'Edit and review epic' : 'Save task handoff'}</h2>
+    {draft.kind === 'review' && <><p>Current repository state, including changes from before this run. Ignored files and external service state are outside this review.</p><p className="source-root">Branch: {draft.branch} - HEAD: {draft.head}</p><details open><summary>Git status and tracked diff</summary><pre>{draft.status || '(clean)'}{'\n'}{draft.diff || '(no tracked diff)'}</pre></details><details open={Boolean(draft.stagedDiff)}><summary>Staged changes</summary><pre>{draft.stagedDiff || '(no staged diff)'}</pre></details><p>Untracked files are fingerprinted; open and inspect their contents in VS Code before acceptance.</p><pre>{draft.untracked?.join('\n') || '(none)'}</pre></>}
+    {draft.kind === 'epic' && <p>Preserve existing story slugs and the linked task. Check boxes only after verification and record the review pass before marking stories done. Save derives the header and adds a stable Epic-ID to legacy plans.</p>}
+    {draft.kind === 'handoff' && <p>Save continuity in this task's notes. The task stays open; this does not clear host chat context or stop a run.</p>}
+    <form onSubmit={event => { event.preventDefault(); post(draft.kind === 'review' ? { type: 'acceptRun', runId: draft.runId!, ...reference, verification, findings } : draft.kind === 'epic' ? { type: 'saveEpic', ...reference, content, verification } : { type: 'recordHandoff', ...reference, nextStep, findings, unknowns, verification }); }}><fieldset disabled={!enabled}>
+      {draft.kind === 'epic' && <label>Epic plan<textarea autoFocus required rows={20} maxLength={256000} value={content} onChange={event => setContent(event.target.value)} /></label>}
+      {draft.kind === 'handoff' && <><label>Exact next step<textarea autoFocus required maxLength={16000} value={nextStep} onChange={event => setNextStep(event.target.value)} /></label><label>Unknowns and blockers<textarea maxLength={16000} value={unknowns} onChange={event => setUnknowns(event.target.value)} /></label></>}
+      {draft.kind !== 'epic' && <label>{draft.kind === 'review' ? 'Review findings and accepted scope' : 'Confirmed findings'}<textarea autoFocus={draft.kind === 'review'} required={draft.kind === 'review'} maxLength={16000} value={findings} onChange={event => setFindings(event.target.value)} /></label>}
+      <label>{draft.kind === 'epic' ? 'Verification, review pass and reason for changes' : 'Verification performed and limitations'}<textarea required maxLength={16000} value={verification} onChange={event => setVerification(event.target.value)} /></label>
+      <button>{draft.kind === 'review' ? 'Accept reviewed work' : draft.kind === 'epic' ? 'Save verified epic' : 'Save handoff'}</button></fieldset></form><button className="secondary" onClick={close}>{dirty ? 'Discard draft and close' : 'Close form'}</button>
+  </section>;
+}

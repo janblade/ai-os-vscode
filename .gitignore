@@ -1,2 +1,11 @@
-.vscode/
+node_modules/
+dist/
+.test-build/
+.vscode-test/
+*.vsix
+
+__pycache__/
+*.py[cod]
 .env
+.env.*
+*.log

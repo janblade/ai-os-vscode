@@ -1,0 +1,230 @@
+{
+  "name": "ai-os-workspace",
+  "displayName": "AI OS Workspace",
+  "description": "AI OS tasks, agents, memory, epics and visual workflows with native Claude, Codex, Gemini and Copilot connectors.",
+  "version": "0.1.36",
+  "publisher": "ai-os",
+  "private": true,
+  "engines": {
+    "vscode": "^1.96.0",
+    "node": ">=22.12.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "main": "./dist/extension.cjs",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Browse files only. Creating, editing, and running workflows requires trust."
+    },
+    "virtualWorkspaces": {
+      "supported": false
+    }
+  },
+  "activationEvents": [
+    "workspaceContains:.ai-os/manifest.json",
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "aiOs.selectFramework",
+        "title": "AI OS: Select Existing Framework"
+      },
+      {
+        "command": "aiOs.initialize",
+        "title": "AI OS: Initialize Workspace"
+      },
+      {
+        "command": "aiOs.previewContext",
+        "title": "AI OS: Preview Task Context"
+      },
+      {
+        "command": "aiOs.createTask",
+        "title": "AI OS: Create Task"
+      },
+      {
+        "command": "aiOs.adoptTask",
+        "title": "AI OS: Adopt Existing Task"
+      },
+      {
+        "command": "aiOs.createWorkflow",
+        "title": "AI OS: Create Example Workflow"
+      },
+      {
+        "command": "aiOs.refresh",
+        "title": "AI OS: Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "aiOs.openItem",
+        "title": "AI OS: Open Item"
+      },
+      {
+        "command": "aiOs.showRuns",
+        "title": "AI OS: Show Run History"
+      },
+      {
+        "command": "aiOs.openDashboard",
+        "title": "AI OS: Open Workspace Dashboard",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "aiOs.createAgent",
+        "title": "AI OS: Create Agent Configuration"
+      },
+      {
+        "command": "aiOs.reviewMemory",
+        "title": "AI OS: Review Memory Proposal"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aiOs",
+          "title": "AI OS",
+          "icon": "media/ai-os.svg"
+        }
+      ]
+    },
+    "views": {
+      "aiOs": [
+        {
+          "id": "aiOs.workspace",
+          "name": "Navigation",
+          "type": "webview"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "aiOs.initialize",
+          "when": "isWorkspaceTrusted"
+        },
+        {
+          "command": "aiOs.selectFramework",
+          "when": "isWorkspaceTrusted"
+        },
+        {
+          "command": "aiOs.previewContext",
+          "when": "isWorkspaceTrusted"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "aiOs.refresh",
+          "when": "view == aiOs.workspace",
+          "group": "navigation"
+        },
+        {
+          "command": "aiOs.openDashboard",
+          "when": "view == aiOs.workspace",
+          "group": "navigation"
+        }
+      ]
+    },
+    "customEditors": [
+      {
+        "viewType": "aiOs.workflow",
+        "displayName": "AI OS Workflow",
+        "selector": [
+          {
+            "filenamePattern": "*.workflow.json"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "configuration": {
+      "title": "AI OS",
+      "properties": {
+        "aiOs.codexPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Absolute path to the native codex executable. Empty discovers the installed CLI; sign in using its native client."
+        },
+        "aiOs.claudePath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Absolute path to the native claude executable. Empty discovers the installed CLI; sign in using its native client."
+        },
+        "aiOs.geminiPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Absolute path to the signed-in Gemini CLI executable or JavaScript entry point. Windows .cmd/.bat shims are not executed; global npm entry points are discovered automatically."
+        },
+        "aiOs.copilotPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Absolute path to the signed-in GitHub Copilot CLI executable or JavaScript entry point. Windows .cmd/.bat shims are not executed; global npm entry points are discovered automatically."
+        },
+        "aiOs.toolApprovalMode": {
+          "type": "string",
+          "enum": [
+            "ask",
+            "autoEdits"
+          ],
+          "enumDescriptions": [
+            "Ask for tool approvals.",
+            "Automatically allow validated repository file edits when AI OS policy permits. Commands, expanded permissions, shared AI OS files, workflow and memory approval remain explicit."
+          ],
+          "default": "ask",
+          "scope": "machine",
+          "description": "User-level tool approval preference. Repository settings cannot grant automatic consent. AI OS policy, read-only phases, protected paths and explicit agent approval gates take precedence."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "tsc --noEmit",
+    "test": "tsc -p tsconfig.tests.json && node --test --test-concurrency=1 .test-build/tests/*.test.js",
+    "test:extension": "npm run build && node scripts/test-extension.mjs",
+    "test:workspace": "npm run build && node scripts/test-live-workspace.mjs",
+    "test:webview": "npm run build && tsc -p tsconfig.tests.json && node scripts/test-webview.mjs",
+    "vscode:prepublish": "npm run check && npm run build",
+    "test:dashboard": "npm run build && node scripts/test-dashboard.mjs",
+    "test:real-agents": "npm run build && node scripts/test-real-agents.mjs",
+    "test:confirmation": "tsc -p tsconfig.tests.json && node scripts/test-confirmation.mjs",
+    "package": "vsce package --no-dependencies --skip-license"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "0.3.296",
+    "@xyflow/react": "12.12.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/vscode": "1.96.0",
+    "@vscode/test-electron": "3.1.0",
+    "esbuild": "0.28.2",
+    "playwright-core": "1.64.0",
+    "typescript": "7.0.2",
+    "@vscode/vsce": "4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/janblade/ai-os-vscode.git"
+  },
+  "homepage": "https://github.com/janblade/ai-os-vscode#readme",
+  "bugs": {
+    "url": "https://github.com/janblade/ai-os-vscode/issues"
+  },
+  "author": {
+    "name": "nitoygo",
+    "url": "https://github.com/nitoygo"
+  },
+  "license": "UNLICENSED"
+}

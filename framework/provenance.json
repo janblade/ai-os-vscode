@@ -1,0 +1,20 @@
+{
+  "source": "https://github.com/janblade/ai-os",
+  "commit": "c8e956dee8fa2daa3786d0706b70caffa4f8f53c",
+  "version": "2.9.0",
+  "overlays": [
+    "scripts/task_identity.py",
+    "scripts/TASK_IDENTITY.md",
+    "scripts/archive_task.py",
+    "scripts/storage.py",
+    "registry/core.memory.sk/SKILL.md"
+  ],
+  "distributionSha256": "405b85aece1977c07f0a595b2c7bdb38ef9a4f61e7f4d8e9b718e8539ac5bce7",
+  "runtimeSha256": {
+    "runtime/archive_task.py": "bddcc906d7cbd236361d36e7024b5f0584dcc30c933bc86ad1b424ba63b919aa",
+    "runtime/context.py": "e7dfad1c4ff3c85b6596f563dac12e5695c684742e3410ed7f3e5acf388c74a1",
+    "runtime/runtime.py": "a79f479499fc06767c7782e021b7507145dac982242dacea54e30f88ecd8e529",
+    "runtime/storage.py": "f516e78fdfdcac2601d16ad18f9f8afa41e0d9b4b6036f00888f6c7bb89c0243",
+    "runtime/task_identity.py": "4232054e08dea561d162cdc19cfdb0024f9b9099fbf450474ef73bad30e70bab"
+  }
+}
